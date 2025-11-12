@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Certificate Dashboard</title>
+    <style>
+      .success {
+        color: green;
+      }
+      .failed {
+        color: red;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Certificate Sending Summary</h1>
+
+    {% if error %}
+    <p style="color: red">{{ error }}</p>
+    {% endif %} {% if summary %}
+    <h2 class="success">✅ Success ({{ summary.success|length }})</h2>
+    <ul>
+      {% for email in summary.success %}
+      <li>{{ email }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2 class="failed">❌ Failed ({{ summary.failed|length }})</h2>
+    <ul>
+      {% for email in summary.failed %}
+      <li>{{ email }}</li>
+      {% endfor %}
+    </ul>
+
+    <p><a href="/">Back to upload</a></p>
+    {% else %}
+    <p>No summary data available.</p>
+    {% endif %}
+  </body>
+</html>

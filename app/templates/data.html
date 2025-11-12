@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/style.css') }}"
+    />
+    <title>Homepage</title>
+  </head>
+  <body class="page">
+    <div class="container">
+      <h1 class="page-title">Email Form</h1>
+
+      <form
+        id="emailForm"
+        class="form"
+        action="/submit-data"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="subject" class="form-label">Subject:</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            class="form-input"
+            placeholder="Enter Email Subject..."
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="editor" class="form-label">Email Body:</label>
+          <div id="editor" class="editor"></div>
+          <input type="hidden" name="body" id="body" />
+        </div>
+
+        <div class="form-group">
+          <label for="template" class="form-label">Template Image (PNG):</label>
+          <input
+            type="file"
+            id="template"
+            name="template"
+            class="form-input"
+            accept=".png"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="cords" class="form-label">Coordinates (x,y):</label>
+          <input
+            type="text"
+            id="cords"
+            name="cords"
+            class="form-input"
+            placeholder="e.g. 120,250"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="fonts" class="form-label">Select Font:</label>
+          <select id="fonts" name="fonts" class="form-select" required>
+            <option value="">-- Choose Font --</option>
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sheet" class="form-label"
+            >Upload Excel Sheet (.xls, .xlsx):</label
+          >
+          <input
+            type="file"
+            id="sheet"
+            name="sheet"
+            class="form-input"
+            accept=".xls, .xlsx"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="service" class="form-label">Choose Service:</label>
+          <select id="service" name="service" class="form-select" required>
+            <option value="">-- Choose Service --</option>
+            <option value="ses">SES</option>
+            <option value="resend">Resend</option>
+            <option value="google">Google Email Service</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+
+      {% if error %}
+      <p class="error-text">{{ error }}</p>
+      {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+      const quill = new Quill("#editor", { theme: "snow" });
+      const form = document.getElementById("emailForm");
+      form.addEventListener("submit", function (e) {
+        document.getElementById("body").value = quill.root.innerHTML;
+      });
+    </script>
+  </body>
+</html>

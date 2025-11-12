@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Processing Certificates</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/style.css') }}"
+    />
+    <script>
+      async function checkStatus() {
+        const taskId = "{{ task_id }}";
+        const res = await fetch(`/task-status/${taskId}`);
+        const data = await res.json();
+        const bar = document.getElementById("bar");
+        const label = document.getElementById("label");
+
+        if (data.state === "PROGRESS") {
+          bar.value = data.percent;
+          label.innerText = `Progress: ${data.percent}% (${data.current}/${data.total})`;
+        } else if (data.state === "SUCCESS") {
+          label.innerText = "✅ All emails sent!";
+          window.location.href = `/dashboard/${taskId}`;
+          return;
+        } else if (data.state === "FAILURE") {
+          label.innerText = "❌ Task failed: " + data.error;
+          return;
+        }
+        setTimeout(checkStatus, 2000);
+      }
+      window.onload = checkStatus;
+    </script>
+  </head>
+  <body class="page">
+    <div class="container">
+      <h1 class="page-title">Processing Certificates...</h1>
+      <progress id="bar" class="progress-bar" value="0" max="100"></progress>
+      <p id="label" class="progress-label">Starting...</p>
+    </div>
+  </body>
+</html>

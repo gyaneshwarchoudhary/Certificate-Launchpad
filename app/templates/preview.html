@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/style.css') }}"
+    />
+    <title>Preview</title>
+  </head>
+  <body class="page">
+    <div class="container">
+      <h1 class="page-title">Preview Email and Certificate</h1>
+
+      {% if error %}
+      <p class="error-text">{{ error }}</p>
+      {% endif %}
+
+      <div class="preview-section">
+        <h2 class="section-title">Subject:</h2>
+        <p class="preview-text">{{ form.subject }}</p>
+
+        <h2 class="section-title">Body:</h2>
+        <div class="preview-body">{{ form.body | safe }}</div>
+
+        <h2 class="section-title">Certificate Preview:</h2>
+        <embed
+          src="{{ certificate }}"
+          type="application/pdf"
+          class="pdf-preview"
+        />
+      </div>
+
+      <form
+        action="/confirm"
+        method="POST"
+        enctype="multipart/form-data"
+        class="form"
+      >
+        <input type="hidden" name="subject" value="{{ form.subject }}" />
+        <input type="hidden" name="body" value="{{ form.body }}" />
+        <input type="hidden" name="cords" value="{{ form.cords }}" />
+        <input type="hidden" name="service" value="{{ form.service }}" />
+        <input type="hidden" name="fonts" value="{{ form.fonts }}" />
+        <input type="hidden" name="sheet" value="{{ sheetpath }}" />
+        <input type="hidden" name="template" value="{{ templatepath }}" />
+
+        <button type="submit" class="btn btn-primary">Confirm and Send</button>
+      </form>
+    </div>
+  </body>
+</html>
