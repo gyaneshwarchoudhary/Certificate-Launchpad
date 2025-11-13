@@ -8,7 +8,7 @@ import pandas as pd
 import os
 
 @celery.task(bind=True, name="tasks.process_excel_file", max_retries=3)
-def process_excel_file(self, filepath, template_path, font_name, cords_data, body, subject):
+def process_excel_file(self, filepath, template_path, font_name, cords_data, body, subject,service="resend"):
     """
     Celery background task: generate & email certificates.
     Tracks progress and returns summary.
@@ -47,12 +47,16 @@ def process_excel_file(self, filepath, template_path, font_name, cords_data, bod
                         sent = send_mail(
                             receiver=recipient_email,
                             certificate_filepath=cert,
+                            service=service,
                             subject=subject or f"Certificate for {recipient_name}",
                             body=body or "",
                         )
                         if sent:
+                            os.remove(cert)
                             summary["success"].append(recipient_email)
                         else:
+                            if cert:
+                                os.remove(cert)
                             summary["failed"].append(recipient_email)
                 except Exception as e:
                     summary["failed"].append(f"{recipient_email}: {str(e)}")
@@ -64,17 +68,18 @@ def process_excel_file(self, filepath, template_path, font_name, cords_data, bod
                     meta={"current": processed, "total": all_rows, "percent": percent},
                 )
 
-    # Cleanup input files
-        for f in (filepath, template_path):
-            try:
-                if os.path.exists(f):
-                    os.remove(f)
-            except Exception as cleanup_error:
-                print(f"⚠️ Could not delete temp file {f}: {cleanup_error}")
-            
+        # Explicit cleanup (raise error if failed)
+        try:
+            os.remove(filepath)
+        except Exception as e:
+            raise RuntimeError(f"Failed to delete input file '{filepath}': {e}")
 
-            return {"status": "DONE", "summary": summary}
+        try:
+            os.remove(template_path)
+        except Exception as e:
+            raise RuntimeError(f"Failed to delete template file '{template_path}': {e}")
 
+        return {"status": "DONE", "summary": summary}
     except Exception as e:
         raise self.retry(exc=e, countdown=10)
 

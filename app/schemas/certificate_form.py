@@ -7,7 +7,8 @@ class CertificateForm(BaseModel):
     cords: str = Field(..., description="Comma-separated X,Y coordinates, e.g. '324.4, 332'")
     fonts: str = Field(..., description="Font name like roboto, opensans, etc.")
     subject: Optional[str] = Field(default="Your Certificate")
-    body: Optional[str] = Field(default="Please find your certificate attached.")
+    body: Optional[str] = Field(default="Please find your certificate attached."),
+    service:str = Field(...,description="service is required")
     sheet: Optional[UploadFile] = None
     template: Optional[UploadFile] = None
 
