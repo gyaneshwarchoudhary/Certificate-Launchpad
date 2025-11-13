@@ -29,7 +29,7 @@ async def submit_data(request: Request, sheet: UploadFile, template: UploadFile)
     form_data = await request.form()
     try:
         validated_form = CertificateForm(**form_data)
-        print(validated_form)
+        print(f"validated_form.model_dump()==={validated_form.model_dump()}")
     except Exception as e:
         return templates.TemplateResponse("data.html", {"request": request, "error": f"Invalid input: {e}"})
 
@@ -72,7 +72,7 @@ async def submit_data(request: Request, sheet: UploadFile, template: UploadFile)
         "preview.html",
         {
             "request": request,
-            "form": validated_form.dict(),
+            "form": validated_form.model_dump(),
             "sheetpath": sheet_path,
             "templatepath": template_path,
             "certificate": certificate_path,
@@ -88,12 +88,15 @@ async def confirm_send(request: Request):
     fonts = form.get("fonts", "")
     sheet_path = form.get("sheet")
     template_path = form.get("template")
+    service= form.get('service')
+
+    print(f"------------------------------service:{service}")
 
     try:
         cords_data = tuple(int(x) for x in cords.split(","))
     except Exception:
         return templates.TemplateResponse("preview.html", {"request": request, "error": "Invalid cords"})
-
+    
     # enqueue background Celery task
     task = process_excel_file.delay(
         filepath=sheet_path,
@@ -102,6 +105,7 @@ async def confirm_send(request: Request):
         cords_data=cords_data,
         body=body,
         subject=subject,
+        service=service,
      )
 
     return templates.TemplateResponse("progress.html", {"request": request, "task_id": task.id})
