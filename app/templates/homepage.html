@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Automation System</title>
+
+    <style>
+      /* Additional styles for homepage */
+      .hero {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        padding: 60px 30px;
+        text-align: center;
+        border-radius: 8px;
+        margin-bottom: 40px;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.95;
+      }
+
+      .hero .btn {
+        font-size: 1.1rem;
+        padding: 15px 40px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+      }
+
+      .feature-card {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .feature-title {
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .feature-desc {
+        color: #666;
+        line-height: 1.6;
+      }
+
+      .how-to-start {
+        background: #f8f9fa;
+        padding: 40px 30px;
+        border-radius: 8px;
+        margin: 40px 0;
+      }
+
+      .guideline-item {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #28a745;
+      }
+
+      .guideline-title {
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .guideline-desc {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .example-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background: white;
+      }
+
+      .example-table th {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      .example-table td {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+      }
+
+      .example-table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      .note-box {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 15px;
+      }
+
+      .note-box strong {
+        color: #856404;
+      }
+
+      .cta-section {
+        text-align: center;
+        padding: 40px;
+        background: linear-gradient(135deg, #28a745 0%, #20833a 100%);
+        border-radius: 8px;
+        margin: 40px 0;
+        color: white;
+      }
+
+      .cta-title {
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      .cta-desc {
+        margin-bottom: 25px;
+        font-size: 1.1rem;
+        opacity: 0.95;
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+        .hero-subtitle {
+          font-size: 1rem;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="page">
+    <div class="container">
+      <!-- Hero Section -->
+      <div class="hero">
+        <h1 class="hero-title">🎓 Certificate Automation System</h1>
+        <p class="hero-subtitle">
+          Automate certificate generation and email delivery at scale
+        </p>
+        <a href="/uploads" class="btn btn-primary">Get Started</a>
+      </div>
+
+      <!-- Overview Section -->
+      <section>
+        <h2
+          class="section-title"
+          style="text-align: center; margin-bottom: 20px"
+        >
+          What Is This System?
+        </h2>
+        <p
+          style="
+            text-align: center;
+            color: #666;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+          "
+        >
+          A production-grade certificate automation system that generates
+          personalized certificates from Excel data and sends them via email.
+          Built with FastAPI, Celery, and multiple mail providers for
+          reliability and security.
+        </p>
+      </section>
+
+      <!-- Key Features Section -->
+      <section>
+        <h2
+          class="section-title"
+          style="text-align: center; margin-bottom: 30px; margin-top: 50px"
+        >
+          🚀 Key Features
+        </h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h3 class="feature-title">Excel Upload</h3>
+            <p class="feature-desc">
+              Upload Excel sheets with participant data. Automatic validation
+              and secure processing.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🖼️</div>
+            <h3 class="feature-title">Custom Templates</h3>
+            <p class="feature-desc">
+              Use PNG templates with configurable text position and styling.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Security First</h3>
+            <p class="feature-desc">
+              Built-in malware scanning, file validation, and input
+              sanitization.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📧</div>
+            <h3 class="feature-title">Multi-Provider Email</h3>
+            <p class="feature-desc">
+              Choose from Resend API, Gmail SMTP, or AWS SES for delivery.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- How to Start Section -->
+      <section class="how-to-start">
+        <h2
+          class="section-title"
+          style="text-align: center; margin-bottom: 30px; color: #222"
+        >
+          📍 How to Start
+        </h2>
+        <p style="text-align: center; color: #666; margin-bottom: 30px">
+          Follow these guidelines to prepare your files and input correctly
+        </p>
+
+        <!-- Subject Field -->
+        <div class="guideline-item">
+          <div class="guideline-title">📝 Subject Field</div>
+          <div class="guideline-desc">
+            Enter the email subject line as plain text only. This will appear in
+            the recipient's inbox.
+          </div>
+          <div class="note-box">
+            <strong>Example:</strong> "Your Certificate of Achievement"
+          </div>
+        </div>
+
+        <!-- Body Field -->
+        <div class="guideline-item">
+          <div class="guideline-title">✉️ Body Field</div>
+          <div class="guideline-desc">
+            Enter the email body content as plain text only. Keep it concise and
+            professional.
+          </div>
+          <div class="note-box">
+            <strong>Example:</strong> "Congratulations! Please find your
+            certificate attached. Thank you for participating in our event."
+          </div>
+        </div>
+
+        <!-- Template Field -->
+        <div class="guideline-item">
+          <div class="guideline-title">🖼️ Template Field (PNG Only)</div>
+          <div class="guideline-desc">
+            Upload your certificate template in
+            <strong>PNG format only</strong>. For best results, convert your
+            template using the
+            <a
+              href="https://www.adobe.com/express/feature/image/convert/png"
+              target="_blank"
+              style="color: #007bff; text-decoration: underline"
+              >Adobe PNG Converter</a
+            >
+            website before uploading.
+          </div>
+          <div class="note-box">
+            <strong>Important:</strong> Only PNG files are accepted. JPG, PDF,
+            or other formats will be rejected.
+          </div>
+        </div>
+
+        <!-- Excel Sheet Field -->
+        <div class="guideline-item">
+          <div class="guideline-title">
+            📊 Excel Sheet Field (.xlsx or .xls)
+          </div>
+          <div class="guideline-desc">
+            Upload an Excel file with exactly two columns:
+            <strong>NAME</strong> and <strong>EMAIL</strong>. The first row must
+            contain these headers, and subsequent rows should contain
+            participant data.
+          </div>
+          <div class="note-box">
+            <strong>Required Format:</strong>
+          </div>
+          <table class="example-table">
+            <thead>
+              <tr>
+                <th>NAME</th>
+                <th>EMAIL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John Doe</td>
+                <td>john.doe@example.com</td>
+              </tr>
+              <tr>
+                <td>Jane Smith</td>
+                <td>jane.smith@example.com</td>
+              </tr>
+              <tr>
+                <td>Michael Johnson</td>
+                <td>michael.j@example.com</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-box" style="margin-top: 15px">
+            <strong>Note:</strong> Ensure there are no empty rows, and all email
+            addresses are valid.
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <h2 class="cta-title">Ready to Automate?</h2>
+        <p class="cta-desc">Start generating and delivering certificates now</p>
+        <a
+          href="/uploads"
+          class="btn"
+          style="
+            background: white;
+            color: #28a745;
+            font-size: 1.1rem;
+            padding: 15px 40px;
+            font-weight: bold;
+          "
+        >
+          Start Now →
+        </a>
+      </section>
+
+      <!-- Footer -->
+      <footer
+        style="
+          text-align: center;
+          padding: 20px;
+          color: #666;
+          border-top: 1px solid #ddd;
+          margin-top: 40px;
+        "
+      >
+        <p style="margin: 0">Built with FastAPI, Celery, and Redis</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -18,9 +18,13 @@ from app.security.file_scanner import validate_image_file, validate_excel_file
 router = APIRouter(tags=["certificate"])
 templates = Jinja2Templates(directory=os.path.join("app", "templates"))
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("data.html", {"request": request})
+    return templates.TemplateResponse("homepage.html", {"request": request})
+
+@router.get('/uploads',response_class=HTMLResponse)
+async def upload_page(request:Request):
+    return templates.TemplateResponse('uploads.html',{"request":request})
 
 @router.post("/submit-data", response_class=HTMLResponse)
 async def submit_data(request: Request, sheet: UploadFile, template: UploadFile):
@@ -90,7 +94,6 @@ async def confirm_send(request: Request):
     template_path = form.get("template")
     service= form.get('service')
 
-    print(f"------------------------------service:{service}")
 
     try:
         cords_data = tuple(int(x) for x in cords.split(","))

@@ -21,7 +21,7 @@ class CertificateForm(BaseModel):
 
     @field_validator("fonts")
     def validate_fonts(cls, v):
-        allowed_fonts = {"roboto", "opensans", "timesnewroman", "arial"}
+        allowed_fonts = {"roboto", "opensans", "timesnewroman", "arial","georgia"}
         if v.lower().strip() not in allowed_fonts:
             raise ValueError(f"Unsupported font '{v}'. Allowed: {', '.join(allowed_fonts)}")
         return v.lower().strip()
