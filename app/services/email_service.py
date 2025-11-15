@@ -14,9 +14,7 @@ def get_mailer(service: str):
         raise ValueError(f"Unknown email service '{service}'")
 
 def send_mail(receiver, certificate_filepath, service="resend", subject="", body=""):
-    """
-    Unified send_mail entrypoint — dispatches to chosen service.
-    """
+
     try:
         mailer = get_mailer(service)
         return mailer.send_email(receiver, subject, body, certificate_filepath)

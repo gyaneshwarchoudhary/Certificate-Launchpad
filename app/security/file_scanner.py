@@ -5,10 +5,6 @@ from fastapi import UploadFile, HTTPException
 import openpyxl
 
 def validate_image_file(file: UploadFile):
-    """
-    Checks if the uploaded PNG is safe, non-corrupt, and actually an image.
-    Rejects files that contain embedded scripts or non-image headers.
-    """
     try:
         file_bytes = file.file.read()
         file.file.seek(0)
@@ -24,10 +20,6 @@ def validate_image_file(file: UploadFile):
         raise HTTPException(status_code=400, detail=f"Image validation failed: {e}")
 
 def validate_excel_file(file: UploadFile):
-    """
-    Ensures uploaded Excel file is a valid XLSX/XLS without macros, 
-    no hidden binary payloads or embedded files.
-    """
     try:
         file_bytes = file.file.read()
         file.file.seek(0)
