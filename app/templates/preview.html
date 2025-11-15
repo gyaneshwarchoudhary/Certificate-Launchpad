@@ -43,8 +43,10 @@
         <input type="hidden" name="cords" value="{{ form.cords }}" />
         <input type="hidden" name="service" value="{{ form.service }}" />
         <input type="hidden" name="fonts" value="{{ form.fonts }}" />
-        <input type="hidden" name="sheet" value="{{ sheetpath }}" />
-        <input type="hidden" name="template" value="{{ templatepath }}" />
+
+        <!-- TEMP FILE PATHS -->
+        <input type="hidden" name="temp_sheet" value="{{ temp_sheet }}" />
+        <input type="hidden" name="temp_template" value="{{ temp_template }}" />
 
         <button type="submit" class="btn btn-primary">Confirm and Send</button>
       </form>

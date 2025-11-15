@@ -165,6 +165,11 @@
           grid-template-columns: 1fr;
         }
       }
+      .started {
+        border: 2px solid white;
+        border-radius: 30px;
+        color: white;
+      }
     </style>
   </head>
   <body class="page">
@@ -175,7 +180,7 @@
         <p class="hero-subtitle">
           Automate certificate generation and email delivery at scale
         </p>
-        <a href="/uploads" class="btn btn-primary">Get Started</a>
+        <a href="/uploads" class="btn btn-primary started">Get Started</a>
       </div>
 
       <!-- Overview Section -->
@@ -364,6 +369,97 @@
         </a>
       </section>
 
+      <!-- Configuration Section -->
+      <section style="margin: 50px 0">
+        <h2
+          class="section-title"
+          style="text-align: center; margin-bottom: 30px"
+        >
+          ⚙️ Setup & Configuration
+        </h2>
+        <div class="guideline-item">
+          <div class="guideline-title">🔧 For Personal Use</div>
+          <div class="guideline-desc">
+            To use this system for your own projects, you'll need to configure
+            your own credentials. Please add your API keys and email provider
+            settings to the <code>.env</code> file in your project directory.
+          </div>
+          <div
+            class="note-box"
+            style="background: #e7f3ff; border-color: #007bff"
+          >
+            <strong style="color: #004085"
+              >Required Environment Variables:</strong
+            >
+          </div>
+          <div
+            style="
+              background: #f8f9fa;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+              padding: 20px;
+              margin-top: 15px;
+              font-family: 'Courier New', monospace;
+              font-size: 0.9rem;
+              overflow-x: auto;
+            "
+          >
+            <pre style="margin: 0; white-space: pre-wrap">
+# Resend API Configuration
+RESEND_API_KEY=YOUR_RESEND_API_KEY
+FROM_EMAIL=YOUR_EMAIL
+
+# Celery / Redis Configuration
+CELERY_BROKER_URL=REDIS_BROKER_URL
+CELERY_RESULT_BACKEND=REDIS_RESULT_BACKEND_URL
+
+# Gmail SMTP Configuration (Optional)
+GMAIL_EMAIL=YOUR_GMAIL
+GMAIL_APP_PASSWORD=YOUR_GMAIL_APP_PASSWORD
+
+# AWS SES Configuration (Optional)
+AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY
+AWS_SECRET_KEY=YOUR_AWS_SECRET_KEY
+AWS_REGION=YOUR_AWS_REGION
+AWS_FROM_EMAIL=YOUR_AWS_FROM_EMAIL</pre
+            >
+          </div>
+          <div class="note-box" style="margin-top: 15px">
+            <strong>Note:</strong> Please replace all placeholder values with
+            your actual credentials. Keep your <code>.env</code> file secure and
+            never commit it to version control.
+          </div>
+        </div>
+
+        <div class="guideline-item" style="margin-top: 25px">
+          <div class="guideline-title">📚 GitHub Repository</div>
+          <div class="guideline-desc">
+            The complete source code, documentation, and setup instructions are
+            available on GitHub. Feel free to star the repository, report
+            issues, or contribute to the project!
+          </div>
+          <div style="text-align: center; margin-top: 20px">
+            <a
+              href="https://github.com/gyaneshwarchoudhary/Certificate-Launchpad.git"
+              target="_blank"
+              class="btn"
+              style="
+                background: #24292e;
+                color: white;
+                font-size: 1rem;
+                padding: 12px 30px;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <span style="font-size: 1.2rem">⭐</span>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer
         style="
@@ -375,6 +471,9 @@
         "
       >
         <p style="margin: 0">Built with FastAPI, Celery, and Redis</p>
+        <p style="margin: 10px 0 0 0; font-size: 0.9rem">
+          Open source and available on GitHub
+        </p>
       </footer>
     </div>
   </body>

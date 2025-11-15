@@ -5,9 +5,7 @@ from fastapi import UploadFile
 from werkzeug.utils import secure_filename
 
 async def save_upload_file(upload_file: UploadFile, destination: str) -> None:
-    """
-    Save an UploadFile (async) to destination path.
-    """
+
     os.makedirs(os.path.dirname(destination) or ".", exist_ok=True)
     try:
         with open(destination, "wb") as f:
@@ -20,10 +18,7 @@ async def save_upload_file(upload_file: UploadFile, destination: str) -> None:
         await upload_file.close()
 
 async def save_template_file(template: UploadFile, save_dir: str = ".") -> str:
-    """
-    Save template image to disk. Returns saved path.
-    Raises ValueError for invalid templates.
-    """
+
     if not template or not template.filename:
         raise ValueError("Template file required")
 
