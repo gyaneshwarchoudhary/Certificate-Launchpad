@@ -24,15 +24,9 @@ celery.conf.update(
     result_expires=3600,
 )
 
-# celery.conf.beat_schedule.update({
-#     "cleanup-temp-files-every-12-hours": {
-#         "task": "tasks.cleanup_temp_files",
-#         "schedule": crontab(hour="0,12", minute=0),  # At 00:00 and 12:00
-#     }
-# })
 celery.conf.beat_schedule.update({
     "cleanup-temp-files-every-12-hours": {
         "task": "tasks.cleanup_temp_files",
-        "schedule": crontab(minute='*/1'),  
+        "schedule": crontab(hour="0,12", minute=0),  # At 00:00 and 12:00
     }
 })

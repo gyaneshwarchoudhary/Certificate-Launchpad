@@ -3,7 +3,7 @@ import time
 from celery import shared_task
 from app.core.config import settings
 
-MAX_AGE_SECONDS = 120  # 60 minutes
+MAX_AGE_SECONDS = 3600  # 60 minutes
 
 @shared_task(name="tasks.cleanup_temp_files")
 def cleanup_temp_files():

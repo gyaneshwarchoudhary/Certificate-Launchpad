@@ -18,7 +18,6 @@ os.makedirs(os.path.join(os.path.dirname(__file__), "static"), exist_ok=True)
 app.mount("/static", StaticFiles(directory=os.path.join("app", "static")), name="static")
 app.mount("/certificates", StaticFiles(directory=settings.CERT_DIR), name="certificates")
 
-#-- Jinga2 template engine
 templates = Jinja2Templates(directory=os.path.join("app", "templates"))
 
 # include routers
