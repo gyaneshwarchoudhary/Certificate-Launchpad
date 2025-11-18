@@ -152,11 +152,65 @@ project_root/
 - Gmail SMTP
 - AWS SES
 
-**Deployment**
+---
 
-- Docker + Docker Compose
-- Nginx (optional reverse proxy)
-- Traefik (optional)
+## 🎥 Live Demo
+
+**[▶️ Watch the full application walkthrough (3 min)](your-youtube-link)**
+
+See certificate generation, preview system, async processing, and results dashboard in action.
+
+---
+
+## 🏗️ Deployment Architecture
+
+### Infrastructure Requirements
+
+This application uses a **distributed task processing architecture**:
+
+```
+┌─────────────┐     ┌──────────┐     ┌────────────────┐
+│   FastAPI   │────▶│  Redis   │◀────│ Celery Worker  │
+│     App     │     │  Broker  │     │  + Beat Sched. │
+└─────────────┘     └──────────┘     └────────────────┘
+```
+
+**Components:**
+
+- FastAPI web server (async endpoints)
+- Redis (task queue + result storage)
+- Celery Worker (certificate generation + email sending)
+- Celery Beat (scheduled cleanup jobs)
+
+### Running Locally
+
+```bash
+docker-compose up -d
+# Access at http://localhost:8000
+```
+
+All services start automatically via Docker Compose.
+
+### Production Deployment
+
+**Deployment-ready for:**
+
+- AWS ECS / EC2 / Lightsail
+- DigitalOcean App Platform / Droplets
+- Hetzner Cloud
+- Any VPS with Docker support
+
+**Architecture notes:**
+
+- Requires persistent Redis (not ephemeral storage)
+- Needs sufficient memory for 3 concurrent services (~512MB minimum)
+- Celery Beat requires always-on scheduler process
+
+Free-tier platforms (Render, Railway, etc.) typically don't support this
+distributed architecture due to resource and persistence constraints.
+This is common for production-grade task queue systems.
+
+**Estimated cloud costs:** $10-15/month on managed platforms, $5/month on VPS.
 
 ---
 
