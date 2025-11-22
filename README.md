@@ -1,172 +1,63 @@
 # Certificate-Launchpad
 
-_A Production-Grade FastAPI + Celery + Redis Application_
+**Production-grade certificate automation with FastAPI, Celery, and Redis**
+
+Eliminate manual certificate generation. Upload a template and recipient list, preview output, then deploy async batch processing with real-time tracking and delivery confirmation across multiple email providers.
 
 ---
 
-## 📌 Overview
+## Live Demonstration
 
-This project is a **scalable, secure, and production-ready certificate automation system** built with **FastAPI**, **Celery**, and **Redis**. It enables organizations to automatically generate personalized certificates from Excel sheets and send them via multiple email providers (Resend, Gmail SMTP, AWS SES), with real-time progress tracking and robust background task handling.
+https://github.com/user-attachments/assets/f939e520-a50f-4fca-8711-01e9b2a4b0f4
 
-The application solves the repetitive and error-prone process of manually generating certificates and sending them individually. It provides an automated pipeline with preview, validation, asynchronous processing, and a dashboard summarizing successful and failed email deliveries.
 
----
-
-## 🎯 Key Objectives
-
-- Automate certificate creation from a template image and recipient list
-- Enable users to preview certificates before final submission
-- Support multiple email providers: **Resend**, **Gmail**, and **AWS SES**
-- Run certificate generation & email sending as **asynchronous Celery jobs**
-- Provide real-time progress tracking and a detailed results dashboard
-- Enforce strict **file validation & security scanning** for Excel and PNG uploads
-- Use **temporary in-project files** during preview to avoid disk bloat
-- Implement **scheduled cleanup** for unused temp files using Celery Beat
-- Build a scalable, Dockerized architecture for production deployment
+Complete walkthrough of certificate generation, preview system, async processing, email delivery, and results dashboard. Demonstrates full functionality in local Docker environment.
 
 ---
 
-## 🚀 Features
+## Why This Exists
 
-### ✔ FastAPI Web Application
+Manual certificate workflows fail at scale. This system automates the entire pipeline: template + Excel → personalized PDFs → validated delivery with failure tracking.
 
-- Responsive forms (data entry)
-- Preview page for certificate visualization
-- Process tracking page
-- Summary dashboard page (success & failed recipients)
-
-### ✔ Certificate Generation
-
-- PNG/JPEG template support
-- Custom font support (Roboto, OpenSans, Arial, Times New Roman)
-- Dynamic text placement based on user-defined coordinates
-- Output in **PDF format**
-
-### ✔ Email Sending (User-Selectable Provider)
-
-- **Resend API**
-- **Gmail SMTP (App Password required)**
-- **AWS SES (verified sender emails)**
-- Provider chosen from UI
-- Pluggable mailer architecture (easy to add more providers)
-
-### ✔ File Validation & Security
-
-- Validate PNG/JPG structure
-- Validate Excel integrity
-- Detect:
-  - corrupt files
-  - macro-enabled Excel files
-  - embedded malware objects
-- Reject oversized or invalid files
-- Sanitize filenames
-- Prevents server-side template injection
-- Prevents malicious Excel uploads
-
-### ✔ Asynchronous Processing (Celery)
-
-- Runs long-running tasks in background (certificate generation + email sending)
-- Uses Redis as broker & backend
-- Reports progress via task meta updates
-- Dashboard results delivered instantly after completion
-
-### ✔ Temporary File Handling
-
-- Preview uses **temporary files stored inside `/temp`**
-- Temporary files are NOT written to permanent storage
-- Permanent files saved ONLY after final confirmation
-
-### ✔ Scheduled Cleanup (Celery Beat)
-
-- Auto-deletes temp files older than 60 minutes
-- Prevents disk bloat
-- Runs in a separate Beat container
-
-### ✔ Production-Ready Deployment
-
-- Dockerized architecture
-- Containers:
-  - FastAPI app
-  - Redis
-  - Celery Worker
-  - Celery Beat
-- Easily deployable on:
-  - DigitalOcean / Hetzner VPS
-  - AWS EC2 / Lightsail
-  - Docker Swarm
-  - Kubernetes
+**Core value:** Transform hours of manual work into minutes of automated processing with zero human intervention after upload.
 
 ---
 
-## 🧱 Project Architecture
+## What It Does
 
-```
-project_root/
-│
-├── app/
-│   ├── main.py                  # FastAPI entrypoint
-│   ├── api/routes/              # API routes
-│   ├── services/                # certificate, email, file logic
-│   ├── tasks/                   # celery tasks (worker & beat)
-│   ├── utils/                   # validators, fonts mapping
-│   ├── security/                # file scanning/malware checks
-│   ├── schemas/                 # Pydantic form models
-│   ├── core/config.py           # environment config
-│   ├── templates/               # Jinja2 HTML templates
-│   ├── static/                  # static files
-│
-├── certificates/                # generated certificate PDFs
-├── uploads/                     # permanent uploaded sheets/templates
-├── temp/                        # temporary preview files
-│
-├── Dockerfile                   # app container
-├── docker-compose.yaml          # multi-container stack
-├── requirements.txt
-├── .env.example
-└── README.md
-```
+### Certificate Generation
+- PNG/JPEG template support with custom fonts (Roboto, OpenSans, Arial, Times New Roman)
+- Dynamic text placement via user-defined coordinates
+- PDF output with validation
 
----
+### Email Delivery (Multi-Provider)
+- **Resend API** – Modern transactional email
+- **Gmail SMTP** – App password authentication
+- **AWS SES** – Enterprise-grade delivery
+- Provider selection at runtime
+- Pluggable architecture for additional providers
 
-## 🛠 Tech Stack
+### Security & Validation
+- PNG/JPG structure verification
+- Excel integrity checks
+- Macro-enabled file detection
+- Malware object scanning
+- Filename sanitization
+- Template injection prevention
 
-**Backend**
+### Async Processing (Celery + Redis)
+- Background job execution for certificate generation + email dispatch
+- Real-time progress tracking via task metadata
+- Instant dashboard delivery on completion
 
-- FastAPI
-- Celery (async task execution)
-- Redis (broker + result backend)
-- Pydantic
-
-**Certificate Generation**
-
-- Pillow (PIL)
-
-**Excel Processing**
-
-- Pandas
-- OpenPyXL
-
-**Email Providers**
-
-- Resend API
-- Gmail SMTP
-- AWS SES
+### File Management
+- Preview mode: temporary files in `/temp` (60-minute auto-purge via Celery Beat)
+- Production mode: permanent storage in `/uploads` and `/certificates`
+- Scheduled cleanup prevents disk bloat
 
 ---
 
-## 🎥 Live Demo
-
-**[▶️ Watch the full application walkthrough (3 min)](your-youtube-link)**
-
-See certificate generation, preview system, async processing, and results dashboard in action.
-
----
-
-## 🏗️ Deployment Architecture
-
-### Infrastructure Requirements
-
-This application uses a **distributed task processing architecture**:
+## Architecture
 
 ```
 ┌─────────────┐     ┌──────────┐     ┌────────────────┐
@@ -175,56 +66,85 @@ This application uses a **distributed task processing architecture**:
 └─────────────┘     └──────────┘     └────────────────┘
 ```
 
-**Components:**
-
-- FastAPI web server (async endpoints)
-- Redis (task queue + result storage)
-- Celery Worker (certificate generation + email sending)
-- Celery Beat (scheduled cleanup jobs)
-
-### Running Locally
-
-```bash
-docker-compose up -d
-# Access at http://localhost:8000
-```
-
-All services start automatically via Docker Compose.
-
-### Production Deployment
-
-**Deployment-ready for:**
-
-- AWS ECS / EC2 / Lightsail
-- DigitalOcean App Platform / Droplets
-- Hetzner Cloud
-- Any VPS with Docker support
-
-**Architecture notes:**
-
-- Requires persistent Redis (not ephemeral storage)
-- Needs sufficient memory for 3 concurrent services (~512MB minimum)
-- Celery Beat requires always-on scheduler process
-
-Free-tier platforms (Render, Railway, etc.) typically don't support this
-distributed architecture due to resource and persistence constraints.
-This is common for production-grade task queue systems.
-
-**Estimated cloud costs:** $10-15/month on managed platforms, $5/month on VPS.
+**Component roles:**
+- **FastAPI:** Web interface + API endpoints
+- **Redis:** Task queue + result backend
+- **Celery Worker:** Certificate generation + email sending
+- **Celery Beat:** Scheduled file cleanup
 
 ---
 
-## ⚙️ Environment Variables
+## Project Structure
 
-Create a `.env` file using `.env.example` as reference:
+```
+project_root/
+├── app/
+│   ├── main.py                  # FastAPI entrypoint
+│   ├── api/routes/              # API endpoints
+│   ├── services/                # Certificate, email, file logic
+│   ├── tasks/                   # Celery tasks (worker + beat)
+│   ├── utils/                   # Validators, font mapping
+│   ├── security/                # File scanning, malware checks
+│   ├── schemas/                 # Pydantic models
+│   ├── core/config.py           # Environment config
+│   ├── templates/               # Jinja2 HTML
+│   └── static/                  # CSS/JS assets
+├── certificates/                # Generated PDFs
+├── uploads/                     # Excel sheets + templates
+├── temp/                        # Preview files (auto-purged)
+├── Dockerfile
+├── docker-compose.yaml
+├── requirements.txt
+└── .env.example
+```
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Web Framework | FastAPI |
+| Task Queue | Celery |
+| Message Broker | Redis |
+| Image Processing | Pillow (PIL) |
+| Excel Parsing | Pandas, OpenPyXL |
+| Email Providers | Resend, Gmail SMTP, AWS SES |
+| Validation | Pydantic |
+
+---
+
+## Quick Start
+
+### Local Deployment
+
+```bash
+# Clone repository
+git clone https://github.com/gyaneshwarchoudhary/Certificate-Launchpad.git
+cd certificate-automation
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# Start services
+docker-compose up --build -d
+
+# Access application
+# http://localhost:8000
+```
+
+### Environment Configuration
+
+**Required variables:**
 
 ```env
-# App directories
+# Directories
 UPLOAD_FOLDER=uploads
 CERT_DIR=certificates
 TEMP_DIR=temp
 
-# Email Providers
+# Email providers (configure at least one)
 RESEND_API_KEY=your_resend_key
 FROM_EMAIL=your_from_email
 
@@ -236,99 +156,73 @@ AWS_SECRET_KEY=your_aws_secret
 AWS_REGION=us-east-1
 AWS_FROM_EMAIL=verified@yourdomain.com
 
-# Redis for Celery
+# Celery + Redis
 CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_RESULT_BACKEND=redis://redis:6379/0
 ```
 
 ---
 
-## 🚀 Local Development Setup
+## Production Deployment
 
-### 1. Clone the repository
+### Infrastructure Requirements
+- **Memory:** 512MB minimum (3 concurrent services)
+- **Storage:** Persistent Redis (not ephemeral)
+- **Architecture:** Distributed task processing (incompatible with free-tier platforms like Render/Railway)
 
-```bash
-git clone https://github.com/gyaneshwarchoudhary/Certificate-Launchpad.git
-cd certificate-automation
-```
+### Supported Platforms
+- AWS ECS / EC2 / Lightsail
+- DigitalOcean App Platform / Droplets
+- Hetzner Cloud
+- Any VPS with Docker support
 
-### 2. Create & fill `.env`
-
-```bash
-cp .env.example .env
-```
-
-### 3. Install dependencies (optional non-docker)
-
-```bash
-pip install -r requirements.txt
-```
+**Cost estimate:** $10-15/month (managed) | $5/month (VPS)
 
 ---
 
-## 🐳 Run with Docker (Recommended)
+## Service Management
 
-### 1. Build & start the entire stack
-
-```bash
-docker-compose up --build -d
-```
-
-### 2. Access the app
-
-```
-http://localhost:8000
-```
-
----
-
-## ⚡ Celery Services in Docker
-
-### Celery Worker
-
+### Monitor Celery Worker
 ```bash
 docker-compose logs -f celery_worker
 ```
 
-### Celery Beat
-
+### Monitor Celery Beat
 ```bash
 docker-compose logs -f celery_beat
 ```
 
-### Redis
-
+### Access Redis CLI
 ```bash
 docker exec -it redis redis-cli
 ```
 
+### Restart services
 ```bash
-docker-compose up -d
+docker-compose restart
 ```
 
-## 🧹 Automatic Cleanup
+---
 
-A scheduled Celery Beat job deletes old temp files:
+## Operational Constraints
 
-- **Directory:** `/temp`
-- **Default retention:** 60 minutes
-- **Purpose:** Prevents disk bloat from discarded previews
-
-You can adjust retention in: `app/tasks/cleanup_tasks.py`
+**Gmail SMTP:** Strict rate limits—use only for small batches (<100 emails/day)  
+**AWS SES:** Requires domain/sender verification before production use  
+**Redis:** Must persist data—configure volume mounts for production  
+**Permissions:** Ensure `/uploads`, `/certificates`, `/temp` directories have write access  
+**Scaling:** Large Excel files (>1000 rows) require additional Celery workers  
+**Docker volumes:** Mount `/temp` if preview persistence is required across container restarts
 
 ---
 
-## ⚠️ Caveats
+## Automatic Cleanup
 
-- Gmail SMTP has strict rate limits (use only for small batches)
-- AWS SES requires domain or sender verification
-- Ensure Redis volume persists if using production workloads
-- Make sure `/uploads`, `/certificates`, `/temp` have write permissions
-- Large Excel files may slow down processing — scale Celery workers if needed
-- If using Docker, ensure your temp directory is **mounted** if persistence is required
+**Celery Beat task:** Deletes preview files older than 60 minutes from `/temp`
+
+Configure retention period in: `app/tasks/cleanup_tasks.py`
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first.
+Open an issue before submitting major changes. Pull requests must include tests and documentation updates.
